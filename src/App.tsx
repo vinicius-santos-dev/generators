@@ -86,7 +86,6 @@ export default function App() {
                 ></Input>
               </div>
             </div>
-
             {/* QR Code */}
             <Card
               className="mt-6 flex items-center justify-center"
@@ -99,7 +98,6 @@ export default function App() {
               </CardContent>
             </Card>
             {/* QR Code */}
-
           </CardContent>
           <CardFooter className="flex flex-col gap-2 ">
             <Button type="submit" className="w-1/2">
