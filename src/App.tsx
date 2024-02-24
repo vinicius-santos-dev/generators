@@ -10,6 +10,9 @@ import {
 } from "./components/ui/card";
 import { Input } from "./components/ui/input";
 import QRCode from "react-qr-code";
+import { Slider } from "./components/ui/slider";
+import { Label } from "./components/ui/label";
+import { Checkbox } from "./components/ui/checkbox";
 
 export default function App() {
   const [isGenerated, setIsGenerated] = useState(false);
@@ -108,6 +111,69 @@ export default function App() {
                 Download
               </Button>
             )}
+          </CardFooter>
+        </form>
+      </Card>
+
+      <Card className="mt-28 w-5/12 flex justify-center flex-col items-center mx-auto">
+        <CardHeader>
+          <CardTitle>Password Generator</CardTitle>
+        </CardHeader>
+        <form>
+          <CardContent className="flex flex-col items-center">
+            <div className="flex w-full max-w-sm items-center space-x-2">
+              <Input type="text" id="text" />
+              <Button type="button">Copy</Button>
+            </div>
+
+            <div className="flex flex-col justify-center w-full mt-8 gap-4">
+              Password Length
+              <Slider id="slider" defaultValue={[6]} max={30} step={1}></Slider>
+            </div>
+
+            <div className="mt-8 grid grid-cols-2 gap-2 w-full">
+              <div className="flex items-center">
+                <Checkbox
+                  className="mr-2"
+                  id="lowercase"
+                  name="lowercase"
+                ></Checkbox>
+                <Label htmlFor="lowercase">Lowercase (a-z)</Label>
+              </div>
+
+              <div className="flex items-center">
+                <Checkbox
+                  className="mr-2"
+                  id="uppercase"
+                  name="uppercase"
+                ></Checkbox>
+                <Label htmlFor="uppercase">Uppercase (A-Z)</Label>
+              </div>
+
+              <div className="flex items-center">
+                <Checkbox
+                  className="mr-2"
+                  id="numbers"
+                  name="numbers"
+                ></Checkbox>
+                <Label htmlFor="numbers">Numbers (0-9)</Label>
+              </div>
+
+              <div className="flex items-center">
+                <Checkbox
+                  className="mr-2"
+                  id="symbols"
+                  name="symbols"
+                ></Checkbox>
+                <Label htmlFor="symbols">Symbols (!$^+-)</Label>
+              </div>
+            </div>
+          </CardContent>
+
+          <CardFooter className="justify-center">
+            <Button type="button" className="w-1/2">
+              Generate password
+            </Button>
           </CardFooter>
         </form>
       </Card>
