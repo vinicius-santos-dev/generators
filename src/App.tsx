@@ -12,9 +12,9 @@ import { Input } from "./components/ui/input";
 import QRCode from "react-qr-code";
 import { Slider } from "./components/ui/slider";
 import { Label } from "./components/ui/label";
-import { Checkbox } from "./components/ui/checkbox";
 
 export default function App() {
+  /* QR Code Generator */
   const [isGenerated, setIsGenerated] = useState(false);
   const [text, setText] = useState("");
 
@@ -68,6 +68,41 @@ export default function App() {
       console.error("Failed to download QR Code", error);
     }
   }
+  /* QR Code Generator */
+
+  /* Password Generator */
+  const [password, setPassword] = useState("");
+  const [passwordLength, setPasswordLength] = useState(6);
+  const [lowercase, setLowercase] = useState(false);
+  const [uppercase, setUppercase] = useState(false);
+  const [numbers, setNumbers] = useState(false);
+  const [symbols, setSymbols] = useState(false);
+
+  function handlePasswordLengthChange(e: Array<number>) {
+    setPasswordLength(e[0]);
+  }
+
+  function generatePassword(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+
+    let charset = "";
+    if (lowercase) charset += "abcdefghijklmnopqrstuvwxyz";
+    if (uppercase) charset += "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    if (numbers) charset += "0123456789";
+    if (symbols) charset += '!"^+%&/()=?_#5%6([]]|;:>:`<.*-@';
+
+    let password = "";
+    for (let i = 0; i < passwordLength; i++) {
+      password += charset.charAt(Math.floor(Math.random() * charset.length));
+    }
+
+    setPassword(password);
+  }
+
+  function copyPassword() {
+    navigator.clipboard.writeText(password);
+  }
+  /* Password Generator */
 
   return (
     <>
@@ -119,59 +154,78 @@ export default function App() {
         <CardHeader>
           <CardTitle>Password Generator</CardTitle>
         </CardHeader>
-        <form>
+        <form onSubmit={generatePassword}>
           <CardContent className="flex flex-col items-center">
             <div className="flex w-full max-w-sm items-center space-x-2">
-              <Input type="text" id="text" />
-              <Button type="button">Copy</Button>
+              <Input type="text" id="password" value={password} readOnly />
+              <Button type="button" onClick={copyPassword}>Copy</Button>
             </div>
 
             <div className="flex flex-col justify-center w-full mt-8 gap-4">
               Password Length
-              <Slider id="slider" defaultValue={[6]} max={30} step={1}></Slider>
+              <Slider
+                id="slider"
+                defaultValue={[passwordLength]}
+                max={20}
+                step={1}
+                onValueChange={(e) => handlePasswordLengthChange(e)}
+              ></Slider>
+              <span className="text-center">{passwordLength}</span>
             </div>
 
             <div className="mt-8 grid grid-cols-2 gap-2 w-full">
               <div className="flex items-center">
-                <Checkbox
+                <input
                   className="mr-2"
                   id="lowercase"
                   name="lowercase"
-                ></Checkbox>
+                  type="checkbox"
+                  checked={lowercase}
+                  onChange={(e) => setLowercase(e.target.checked)}
+                ></input>
                 <Label htmlFor="lowercase">Lowercase (a-z)</Label>
               </div>
 
               <div className="flex items-center">
-                <Checkbox
+                <input
                   className="mr-2"
                   id="uppercase"
                   name="uppercase"
-                ></Checkbox>
+                  type="checkbox"
+                  checked={uppercase}
+                  onChange={(e) => setUppercase(e.target.checked)}
+                ></input>
                 <Label htmlFor="uppercase">Uppercase (A-Z)</Label>
               </div>
 
               <div className="flex items-center">
-                <Checkbox
+                <input
                   className="mr-2"
                   id="numbers"
                   name="numbers"
-                ></Checkbox>
+                  type="checkbox"
+                  checked={numbers}
+                  onChange={(e) => setNumbers(e.target.checked)}
+                ></input>
                 <Label htmlFor="numbers">Numbers (0-9)</Label>
               </div>
 
               <div className="flex items-center">
-                <Checkbox
+                <input
                   className="mr-2"
                   id="symbols"
                   name="symbols"
-                ></Checkbox>
+                  type="checkbox"
+                  checked={symbols}
+                  onChange={(e) => setSymbols(e.target.checked)}
+                ></input>
                 <Label htmlFor="symbols">Symbols (!$^+-)</Label>
               </div>
             </div>
           </CardContent>
 
           <CardFooter className="justify-center">
-            <Button type="button" className="w-1/2">
+            <Button type="submit" className="w-1/2">
               Generate password
             </Button>
           </CardFooter>
