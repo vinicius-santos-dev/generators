@@ -11,6 +11,7 @@ import { Label } from "@/components/ui/label";
 import { Slider } from "@/components/ui/slider";
 import { Toaster, toast } from "sonner";
 import { useState } from "react";
+import { track } from "@vercel/analytics";
 
 interface PasswordSettings {
   password: string;
@@ -56,6 +57,8 @@ export default function PasswordGenerator() {
     }
 
     setPasswordSettings({ ...passwordSettings, password });
+
+    track("Generate password clicked");
   }
 
   function copyPassword() {
@@ -67,6 +70,8 @@ export default function PasswordGenerator() {
       position: "bottom-center",
       style: { color: "white", backgroundColor: "black" },
     });
+
+    track("Copy password clicked");
   }
 
   return (

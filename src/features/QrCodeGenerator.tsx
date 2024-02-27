@@ -12,6 +12,8 @@ import { useState } from "react";
 
 import QRCode from "react-qr-code";
 
+import { track } from "@vercel/analytics";
+
 export default function QrCodeGenerator() {
   const [isGenerated, setIsGenerated] = useState(false);
   const [text, setText] = useState("");
@@ -19,6 +21,8 @@ export default function QrCodeGenerator() {
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setIsGenerated(true);
+
+    track("Generate QR Code clicked");
   }
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
@@ -62,6 +66,8 @@ export default function QrCodeGenerator() {
       ) as unknown as SVGSVGElement;
       const pngFile = await convertSvgToPng(qrCodeSvg);
       downloadPng(pngFile);
+
+      track("Download QR Code clicked");
     } catch (error) {
       console.error("Failed to download QR Code", error);
     }
