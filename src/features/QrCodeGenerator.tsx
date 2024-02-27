@@ -68,7 +68,7 @@ export default function QrCodeGenerator() {
   }
 
   return (
-    <Card className="w-5/12 m-auto flex justify-center flex-col items-center">
+    <Card className="flex justify-center flex-col items-center">
       <CardHeader>
         <CardTitle>QR Code Generator</CardTitle>
         <CardDescription>Enter your text or URL</CardDescription>

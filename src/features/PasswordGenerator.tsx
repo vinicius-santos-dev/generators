@@ -9,6 +9,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Slider } from "@/components/ui/slider";
+import { Toaster, toast } from "sonner";
 import { useState } from "react";
 
 interface PasswordSettings {
@@ -61,10 +62,15 @@ export default function PasswordGenerator() {
     const password = passwordSettings.password;
 
     navigator.clipboard.writeText(password);
+
+    toast("Password copied to clipboard", {
+      position: "bottom-center",
+      style: { color: "white", backgroundColor: "black" },
+    });
   }
 
   return (
-    <Card className="mt-28 w-5/12 flex justify-center flex-col items-center mx-auto">
+    <Card className="flex justify-center flex-col items-center">
       <CardHeader>
         <CardTitle>Password Generator</CardTitle>
       </CardHeader>
@@ -77,13 +83,17 @@ export default function PasswordGenerator() {
               value={passwordSettings.password}
               readOnly
             />
-            <Button type="button" onClick={copyPassword}>
+            <Button
+              type="button"
+              onClick={copyPassword}
+              disabled={passwordSettings.password === ""}
+            >
               Copy
             </Button>
           </div>
 
           <div className="flex flex-col justify-center w-full mt-8 gap-4">
-            Password Length
+            Password Length: {passwordSettings.passwordLength}
             <Slider
               id="slider"
               defaultValue={[passwordSettings.passwordLength]}
@@ -91,9 +101,6 @@ export default function PasswordGenerator() {
               step={1}
               onValueChange={(e) => handlePasswordLengthChange(e)}
             ></Slider>
-            <span className="text-center">
-              {passwordSettings.passwordLength}
-            </span>
           </div>
 
           <div className="mt-8 grid grid-cols-2 gap-2 w-full">
@@ -173,6 +180,7 @@ export default function PasswordGenerator() {
           </Button>
         </CardFooter>
       </form>
+      <Toaster theme="dark" closeButton={true} />
     </Card>
   );
 }
